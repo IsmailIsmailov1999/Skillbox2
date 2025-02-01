@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: track_habits
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://user:password@db/track_habits
+      SECRET_KEY: "supersecretkey"
+    ports:
+      - "8000:8000"
+
+  bot:
+    build: ./telegram_bot
+    depends_on:
+      - backend
+    environment:
+      TELEGRAM_BOT_TOKEN: "your_bot_token"
+      API_URL: "http://backend:8000"
