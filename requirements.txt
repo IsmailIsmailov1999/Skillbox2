@@ -10,3 +10,5 @@ python-multipart
 pyTelegramBotAPI
 requests
 python-dotenv
+black
+pre-commit
